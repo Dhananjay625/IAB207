@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub - The Weeknd 2024 Australia Tour</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.homepage') }}">
+                <img src="img/logo.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                EventHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.homepage') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.booking') }}">Booking History</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div id="tourCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="img/bruh3.jpg" class="d-block w-100" alt="The Weeknd Tour">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1>The Weeknd 2024 Australia Tour</h1>
+                        <p>Experience the After Hours Til Dawn Tour Live in Australia!</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="img/bruh4.jpg.webp" class="d-block w-100" alt="The Weeknd Tour">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1>Live in Sydney, Melbourne, and Brisbane</h1>
+                        <p>Get your tickets now!</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#tourCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#tourCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container my-5">
+        <h2 class="mb-4 text-center">The Weeknd's Tour Dates in Australia</h2>
+        <div class="row mb-5">
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card event-card">
+                    <span class="event-status status-open">Open</span>
+                    <img src="img/bruh1.jpg" class="card-img-top" alt="The Weeknd Tour">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">The Weeknd - Sydney Concert</h5>
+                        <p class="card-text">Live at Sydney Stadium, Australia.</p>
+                        <p class="card-text"><small>April 20, 2025</small></p>
+                        <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card event-card">
+                    <span class="event-status">Sold Out</span>
+                    <img src="img/bruh2.jpg" class="card-img-top" alt="The Weeknd Tour">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">The Weeknd - Melbourne Concert</h5>
+                        <p class="card-text">Live at Melbourne Arena, Australia.</p>
+                        <p class="card-text"><small>April 25, 2025</small></p>
+                        <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card event-card">
+                    <span class="event-status status-open">Open</span>
+                    <img src="img/bruh5.png" class="card-img-top" alt="The Weeknd Tour">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">The Weeknd - Brisbane Concert</h5>
+                        <p class="card-text">Live at Brisbane Entertainment Centre, Australia.</p>
+                        <p class="card-text"><small>April 30, 2025</small></p>
+                        <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="bookingConfirmedModal" tabindex="-1" aria-labelledby="bookingConfirmedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingConfirmedModalLabel">Booking Confirmed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Your booking has been successfully confirmed!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 EventHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('booking') === 'confirmed') {
+                const bookingConfirmedModal = new bootstrap.Modal(document.getElementById('bookingConfirmedModal'));
+                bookingConfirmedModal.show();
+            }
+        };
+    </script>
+</body>
+
+</html>
