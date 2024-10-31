@@ -12,10 +12,13 @@ auth_bp = Blueprint('auth', __name__)
 def login():
     login_form = LoginForm()
     error = None
+    print(login_form.validate_on_submit())
     if login_form.validate_on_submit():
         user_name = login_form.user_name.data
         password = login_form.password.data
         user = db.session.scalar(db.select(User).where(User.username == user_name)) 
+        print(user_name)
+        print(password)
         
         if user is None:
             flash("Account doesn't exist.Create a new one.")
@@ -36,17 +39,12 @@ def login():
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     register_form = RegisterForm()
-    print(register_form.validate_on_submit())
 
     if request.method == 'POST' and register_form.validate_on_submit():
-        print(request.method)
-        username = register_form.username.data
+        username = register_form.user_name.data
         email = register_form.email.data
         password = register_form.password.data
         confirm_password = register_form.confirm_password.data
-        print("Username:", username)
-        print("Email:", email)
-
 
         if password != confirm_password:
             flash('Passwords do not match.')
