@@ -13,7 +13,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.homepage') }}">
-                <img src="img/logo.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
                 EventHub
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -45,14 +45,14 @@
         <div id="tourCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="img/bruh3.jpg" class="d-block w-100" alt="The Weeknd Tour">
+                    <img src="{{ url_for('static', filename='img/bruh3.jpg') }}" class="d-block w-100" alt="The Weeknd Tour">
                     <div class="carousel-caption d-none d-md-block">
                         <h1>The Weeknd 2024 Australia Tour</h1>
                         <p>Experience the After Hours Til Dawn Tour Live in Australia!</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="img/bruh4.jpg.webp" class="d-block w-100" alt="The Weeknd Tour">
+                    <img src="{{ url_for('static', filename='img/bruh4.jpg.webp') }}" class="d-block w-100" alt="The Weeknd Tour">
                     <div class="carousel-caption d-none d-md-block">
                         <h1>Live in Sydney, Melbourne, and Brisbane</h1>
                         <p>Get your tickets now!</p>
@@ -76,7 +76,7 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card event-card">
                     <span class="event-status status-open">Open</span>
-                    <img src="img/bruh1.jpg" class="card-img-top" alt="The Weeknd Tour">
+                    <img src="{{ url_for('static', filename='img/bruh1.jpg') }}"class="card-img-top" alt="The Weeknd Tour">
                     <div class="card-body text-center">
                         <h5 class="card-title">The Weeknd - Sydney Concert</h5>
                         <p class="card-text">Live at Sydney Stadium, Australia.</p>
@@ -88,7 +88,7 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card event-card">
                     <span class="event-status">Sold Out</span>
-                    <img src="img/bruh2.jpg" class="card-img-top" alt="The Weeknd Tour">
+                    <img src="{{ url_for('static', filename='img/bruh2.jpg') }}" class="card-img-top" alt="The Weeknd Tour">
                     <div class="card-body text-center">
                         <h5 class="card-title">The Weeknd - Melbourne Concert</h5>
                         <p class="card-text">Live at Melbourne Arena, Australia.</p>
@@ -100,7 +100,7 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card event-card">
                     <span class="event-status status-open">Open</span>
-                    <img src="img/bruh5.png" class="card-img-top" alt="The Weeknd Tour">
+                    <img src="{{ url_for('static', filename='img/bruh2.jpg') }}" class="card-img-top" alt="The Weeknd Tour">
                     <div class="card-body text-center">
                         <h5 class="card-title">The Weeknd - Brisbane Concert</h5>
                         <p class="card-text">Live at Brisbane Entertainment Centre, Australia.</p>
