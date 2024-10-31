@@ -48,7 +48,7 @@ def booking():
             price = 100 * quantity  
             
             # Create new booking
-            new_booking = Booking(quantity=quantity, price=price, user_id=current_user.id, event_id=event_id)
+            new_booking = Booking(quantity=quantity, price=price, user_id=current_user, event_id=event_id)
             db.session.add(new_booking)
             db.session.commit()
 
