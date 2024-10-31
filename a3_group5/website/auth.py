@@ -75,3 +75,9 @@ def register():
             return render_template('register.html', form=register_form)
 
     return render_template('register.html', form=register_form)
+
+@auth_bp.route('/logout')
+def logout():
+    logout_user()  # Make sure this logs out the user correctly
+    flash('You have been logged out successfully!', 'success')
+    return redirect(url_for('main.homepage'))
