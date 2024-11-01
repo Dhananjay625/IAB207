@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask import Blueprint, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from .models import Event, Booking, db, Comment
-from .forms import TicketBookingForm, EventCreationForm
+from .forms import TicketBookingForm, EventCreationForm, BookingForm
 import random
 from datetime import datetime
 
@@ -92,34 +92,40 @@ def create_event():
 
 
 @main_bp.route('/booking', methods=['GET', 'POST'])
-@login_required 
+@login_required
 def booking():
-    events = Event.query.filter_by(status='Open').all()  
+    form = BookingForm()
     
-    if request.method == 'POST':
-        event_id = request.form.get('selectEvent')
-        quantity = request.form.get('ticketQuantity')
-        
-        if not event_id or not quantity:
-            flash('Please select an event and specify the number of tickets.', 'danger')
-            return redirect(url_for('main.booking'))
-        
+    form.select_event.choices = [(str(event.id), event.name) for event in Event.query.filter_by(status='Open').all()]
+
+    if form.validate_on_submit():
+        event_id = int(form.select_event.data)
+        ticket_type = form.ticket_type.data
+        ticket_quantity = form.ticket_quantity.data
+
+        event = Event.query.get_or_404(event_id)
+        TICKET_PRICES = {"1": 100.0, "2": 200.0, "3": 300.0}
+        price_per_ticket = TICKET_PRICES[ticket_type]
+        total_price = price_per_ticket * ticket_quantity
+
+        new_booking = Booking(
+            quantity=ticket_quantity,
+            price=total_price,
+            user_id=current_user.id,
+            event_id=event.id
+        )
+
         try:
-            quantity = int(quantity) 
-            price = 100 * quantity 
-            
-            new_booking = Booking(quantity=quantity, price=price, user_id=current_user.id, event_id=event_id)
             db.session.add(new_booking)
             db.session.commit()
-            
             flash('Booking confirmed!', 'success')
             return redirect(url_for('main.homepage'))
-        
-        except ValueError:
-            flash('Invalid input. Please enter a valid number for tickets.', 'danger')
-            return redirect(url_for('main.booking'))
-    
-    return render_template('booking.html', events=events)
+        except Exception as e:
+            db.session.rollback()
+            flash(f'An error occurred: {e}', 'danger')
+
+    return render_template('booking.html', form=form)
+
 
 @main_bp.route('/event/<int:event_id>')
 def event_details(event_id):

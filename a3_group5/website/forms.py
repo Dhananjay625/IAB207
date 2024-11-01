@@ -31,3 +31,13 @@ class EventCreationForm(FlaskForm):
     venue = StringField("Venue", validators=[InputRequired()])
     price = IntegerField("Ticket Price")  
     submit = SubmitField("Create Event")
+
+class BookingForm(FlaskForm):
+    select_event = SelectField("Select Event", choices=[])
+    ticket_type = SelectField("Ticket Type", choices=[("1", "Standard - $100"), ("2", "VIP - $200"), ("3", "Premium - $300")])
+    ticket_quantity = IntegerField("Number of Tickets")
+    name = StringField("Your Name")
+    email = EmailField("Email Address")
+    mobile_number = StringField("Mobile Number")
+    payment_method = SelectField("Payment Method", choices=[("credit", "Credit Card"), ("paypal", "PayPal"), ("bank", "Bank Transfer")])
+    submit = SubmitField("Book Now")

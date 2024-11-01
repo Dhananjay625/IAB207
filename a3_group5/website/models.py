@@ -23,6 +23,7 @@ class Event(db.Model):
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
     venue = db.Column(db.String(300), nullable=False)
+    price = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

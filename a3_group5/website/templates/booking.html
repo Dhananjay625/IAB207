@@ -44,54 +44,48 @@
 
     <main class="container my-5">
         <h2>Book Your Event</h2>
-        <form onsubmit="confirmBooking(event)">
+        <form method="POST" action="{{ url_for('main.booking') }}">
+            {{ form.hidden_tag() }}
+        
             <div class="mb-3">
-                <label for="selectEvent" class="form-label">Select Event</label>
-                <select class="form-select" id="selectEvent" required>
-                    <option value="" selected>Select an event...</option>
-                    <option value="1">The Weeknd - Sydney Concert</option>
-                    <option value="2">The Weeknd - Melbourne Concert</option>
-                    <option value="3">The Weeknd - Brisbane Concert</option>
-                </select>
+                {{ form.select_event.label(class="form-label") }}
+                {{ form.select_event(class="form-select") }}
             </div>
+        
             <div class="mb-3">
-                <label for="ticketType" class="form-label">Ticket Type</label>
-                <select class="form-select" id="ticketType" required>
-                    <option value="" selected>Select ticket type...</option>
-                    <option value="1">Standard - $100</option>
-                    <option value="2">VIP - $200</option>
-                    <option value="3">Premium - $300</option>
-                </select>
+                {{ form.ticket_type.label(class="form-label") }}
+                {{ form.ticket_type(class="form-select") }}
             </div>
+        
             <div class="mb-3">
-                <label for="ticketQuantity" class="form-label">Number of Tickets</label>
-                <input type="number" class="form-control" id="ticketQuantity" min="1" max="10" value="1" required>
+                {{ form.ticket_quantity.label(class="form-label") }}
+                {{ form.ticket_quantity(class="form-control") }}
             </div>
+        
             <div class="mb-3">
-                <label for="name" class="form-label">Your Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
             </div>
+        
             <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
             </div>
+        
             <div class="mb-3">
-                <label for="Mobile Number" class="form-label">Mobile Number</label>
-                <input type="number" class="form-control" id="number" placeholder="Enter your Phone Number" required>
+                {{ form.mobile_number.label(class="form-label") }}
+                {{ form.mobile_number(class="form-control") }}
             </div>
+        
             <div class="mb-3">
-                <label for="paymentMethod" class="form-label">Payment Method</label>
-                <select class="form-select" id="paymentMethod" required>
-                    <option value="" selected>Select payment method...</option>
-                    <option value="credit">Credit Card</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="bank">Bank Transfer</option>
-                </select>
+                {{ form.payment_method.label(class="form-label") }}
+                {{ form.payment_method(class="form-select") }}
             </div>
-            <button type="submit" class="btn btn-primary mt-3">Book Now</button>
+                <button type="submit" class="btn btn-primary mt-3">Book Now</button>
         </form>
     </main>
-
+    
+    
     <footer class="text-center py-3">
         <div class="container">
             <p>&copy; 2024 EventHub. All rights reserved.</p>
