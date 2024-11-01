@@ -67,6 +67,7 @@
     <main class="container my-5">
         <h2 class="mb-4 text-center">All Upcoming Events</h2>
 
+        <!-- Sort By Category Form -->
         <form action="{{ url_for('main.homepage') }}" method="get" class="d-flex justify-content-end mb-3">
             <label for="sort" class="me-2">Sort by:</label>
             <select name="sort" id="sort" class="form-select w-auto" onchange="this.form.submit()">
