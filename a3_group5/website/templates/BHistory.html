@@ -45,30 +45,24 @@
     <main class="container my-5">
         <h2>Your Booking History</h2>
         <div class="list-group">
+            {% for booking in bookings %}
             <div class="list-group-item">
                 <div class="row">
                     <div class="col-md-2">
                         <img src="{{ url_for('static', filename='img/bruh2.jpg') }}" class="img-fluid" alt="Event Image">
                     </div>
                     <div class="col-md-8">
-                        <h5>The Weeknd - Sydney Concert</h5>
-                        <p><strong>Booking ID:</strong> 61245</p>
-                        <p><strong>Booked On:</strong> August 10, 2024</p>
+                        <h5>{{ booking.event_name }}</h5>
+                        <p><strong>Booking ID:</strong> {{ booking.booking_id }}</p>
+                        <p><strong>Quantity:</strong> {{ booking.quantity }}</p>
+                        <p><strong>Total Price:</strong> ${{ booking.price }}</p>
+                        <p><strong>Event Date:</strong> {{ booking.event_date.strftime('%B %d, %Y') }}</p>
                     </div>
                 </div>
             </div>
-            <div class="list-group-item">
-                <div class="row">
-                    <div class="col-md-2">
-                        <img src="{{ url_for('static', filename='img/bruh5.png') }}" class="img-fluid" alt="Event Image">
-                    </div>
-                    <div class="col-md-8">
-                        <h5>The Weeknd - Brisbane Concert</h5>
-                        <p><strong>Booking ID:</strong> 13985</p>
-                        <p><strong>Booked On:</strong> September 1, 2024</p>
-                    </div>
-                </div>
-            </div>
+            {% else %}
+            <p class="text-center">You have no bookings at the moment.</p>
+            {% endfor %}
         </div>
     </main>
 

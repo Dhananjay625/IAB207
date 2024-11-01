@@ -139,7 +139,15 @@ def event_details(event_id):
 @main_bp.route('/booking_history')
 @login_required
 def booking_history():
-    bookings = Booking.query.filter_by(user_id=current_user.id).all()
+    bookings = Booking.query.filter_by(user_id=current_user.id).join(Event, Booking.event_id == Event.id).add_columns(
+        Booking.id.label("booking_id"),
+        Booking.quantity,
+        Booking.price,
+        Booking.event_id,
+        Event.name.label("event_name"),
+        Event.date.label("event_date")
+    ).all()
+
     return render_template('BHistory.html', bookings=bookings)
 
 
