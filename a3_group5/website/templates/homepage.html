@@ -21,21 +21,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.homepage') }}">Home</a>
-                    </li>
-                 {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.booking') }}">Book Event</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a></li>
-                {% endif %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.homepage') }}">Home</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.booking') }}">Book Event</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -70,46 +64,38 @@
         </div>
     </header>
 
+    <main class="container my-5">
+        <h2 class="mb-4 text-center">All Upcoming Events</h2>
 
-        <main class="container my-5">
-            <h2 class="mb-4 text-center">All Upcoming Events</h2>
-            <div class="row mb-5">
-                {% for event in events %}
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card event-card">
-                            <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link"></a>
-                            <span class="event-status {% if event.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
-                                {{ event.status }}
-                            </span>
-                            <img src="{{ url_for('static', filename='img/bruh1.jpg') }}" class="card-img-top" alt="Event Image">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">{{ event.name }}</h5>
-                                <p class="card-text">{{ event.venue }}</p>
-                                <p class="card-text"><small>{{ event.date.strftime('%B %d, %Y') }}</small></p>
-                                <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
-                            </div>
+        <form action="{{ url_for('main.homepage') }}" method="get" class="d-flex justify-content-end mb-3">
+            <label for="sort" class="me-2">Sort by:</label>
+            <select name="sort" id="sort" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="a-z">A-Z</option>
+                <option value="z-a">Z-A</option>
+                <option value="date">Date</option>
+            </select>
+        </form>
+
+        <div class="row mb-5">
+            {% for event in events %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card event-card">
+                        <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link"></a>
+                        <span class="event-status {% if event.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
+                            {{ event.status }}
+                        </span>
+                        <img src="{{ url_for('static', filename='img/bruh1.jpg') }}" class="card-img-top" alt="Event Image">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ event.name }}</h5>
+                            <p class="card-text">{{ event.venue }}</p>
+                            <p class="card-text"><small>{{ event.date.strftime('%B %d, %Y') }}</small></p>
+                            <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        </main>
-        
-    <div class="modal fade" id="bookingConfirmedModal" tabindex="-1" aria-labelledby="bookingConfirmedModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bookingConfirmedModalLabel">Booking Confirmed</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Your booking has been successfully confirmed!
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-    </div>
+    </main>
 
     <footer class="text-center py-3">
         <div class="container">
@@ -118,15 +104,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('booking') === 'confirmed') {
-                const bookingConfirmedModal = new bootstrap.Modal(document.getElementById('bookingConfirmedModal'));
-                bookingConfirmedModal.show();
-            }
-        };
-    </script>
 </body>
 
 </html>
