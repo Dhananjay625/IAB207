@@ -13,6 +13,48 @@ def homepage():
     events = Event.query.all()  
     return render_template('homepage.html', events=events)
 
+
+@main_bp.route('/edit_event/<int:event_id>', methods=['GET', 'POST'])
+@login_required
+def edit_event(event_id):
+    event = Event.query.get_or_404(event_id)
+
+    if event.user_id != current_user.id:
+        flash("You do not have permission to edit this event.", "danger")
+        return redirect(url_for('main.homepage'))
+
+    form = EventCreationForm(obj=event)
+
+    if request.method == 'POST' and form.validate_on_submit():
+        event.name = form.name.data
+        event.description = form.description.data
+        event.date = form.date.data
+        event.start_time = form.start_time.data
+        event.end_time = form.end_time.data
+        event.venue = form.venue.data
+        event.price = form.price.data
+
+        db.session.commit()
+        flash('Event updated successfully!', 'success')
+        return redirect(url_for('main.homepage'))
+
+    return render_template('ECreation.html', form=form, event=event)
+
+@main_bp.route('/cancel_event/<int:event_id>', methods=['POST'])
+@login_required
+def cancel_event(event_id):
+    event = Event.query.get_or_404(event_id)
+
+    if event.user_id != current_user.id:
+        flash("You do not have permission to cancel this event.", "danger")
+        return redirect(url_for('main.homepage'))
+
+    db.session.delete(event)
+    db.session.commit()
+    flash('Event canceled successfully!', 'success')
+    return redirect(url_for('main.homepage'))
+
+
 @main_bp.route('/create_event', methods=['GET', 'POST'])
 def create_event():
     form = EventCreationForm()
@@ -35,7 +77,8 @@ def create_event():
             start_time=start_time,
             end_time=end_time,
             venue=venue,
-            status='Open'
+            status='Open',
+            user_id=current_user.id
         )
         
         print("New event created:", new_event)

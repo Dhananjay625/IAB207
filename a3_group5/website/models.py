@@ -24,6 +24,7 @@ class Event(db.Model):
     end_time = db.Column(db.Time, nullable=False)
     venue = db.Column(db.String(300), nullable=False)
     status = db.Column(db.String(20), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     bookings = db.relationship('Booking', back_populates='event', lazy=True)
     comments = db.relationship('Comment', back_populates='event', lazy=True)

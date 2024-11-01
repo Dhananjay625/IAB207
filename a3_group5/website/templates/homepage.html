@@ -70,51 +70,30 @@
         </div>
     </header>
 
-    <main class="container my-5">
-        <h2 class="mb-4 text-center">The Weeknd's Tour Dates in Australia</h2>
-        <div class="row mb-5">
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card event-card">
-                    <a href="{{ url_for('event.show',id= 1001) }}" class="stretched-link"></a>
-                    <span class="event-status status-open">Open</span>
-                    <img src="{{ url_for('static', filename='img/bruh1.jpg') }}"class="card-img-top" alt="The Weeknd Tour">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">The Weeknd - Sydney Concert</h5>
-                        <p class="card-text">Live at Sydney Stadium, Australia.</p>
-                        <p class="card-text"><small>April 20, 2025</small></p>
-                        <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card event-card">
-                    <a href="{{ url_for('event.show', id=1002) }}" class="stretched-link"></a>
-                    <span class="event-status">Sold Out</span>
-                    <img src="{{ url_for('static', filename='img/bruh2.jpg') }}" class="card-img-top" alt="The Weeknd Tour">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">The Weeknd - Melbourne Concert</h5>
-                        <p class="card-text">Live at Melbourne Arena, Australia.</p>
-                        <p class="card-text"><small>April 25, 2025</small></p>
-                        <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card event-card">
-                    <a href="{{ url_for('event.show', id=1003) }}" class="stretched-link"></a>
-                    <span class="event-status status-open">Open</span>
-                    <img src="{{ url_for('static', filename='img/bruh2.jpg') }}" class="card-img-top" alt="The Weeknd Tour">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">The Weeknd - Brisbane Concert</h5>
-                        <p class="card-text">Live at Brisbane Entertainment Centre, Australia.</p>
-                        <p class="card-text"><small>April 30, 2025</small></p>
-                        <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
 
+        <main class="container my-5">
+            <h2 class="mb-4 text-center">All Upcoming Events</h2>
+            <div class="row mb-5">
+                {% for event in events %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card event-card">
+                            <a href="{{ url_for('event.show', id=event.id) }}" class="stretched-link"></a>
+                            <span class="event-status {% if event.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
+                                {{ event.status }}
+                            </span>
+                            <img src="{{ url_for('static', filename='img/bruh1.jpg') }}" class="card-img-top" alt="Event Image">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ event.name }}</h5>
+                                <p class="card-text">{{ event.venue }}</p>
+                                <p class="card-text"><small>{{ event.date.strftime('%B %d, %Y') }}</small></p>
+                                <a href="{{ url_for('main.booking') }}" class="btn btn-primary">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </main>
+        
     <div class="modal fade" id="bookingConfirmedModal" tabindex="-1" aria-labelledby="bookingConfirmedModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
