@@ -34,11 +34,10 @@ def create_event():
     
     return render_template('ECreation.html')
 
-# Route for booking an event
 @main_bp.route('/booking', methods=['GET', 'POST'])
-@login_required  # Ensure only logged-in users can access this route
+@login_required 
 def booking():
-    events = Event.query.filter_by(status='Open').all()  # Fetch only events with status 'Open'
+    events = Event.query.filter_by(status='Open').all() 
     
     if request.method == 'POST':
         event_id = request.form.get('selectEvent')
@@ -49,10 +48,10 @@ def booking():
             return redirect(url_for('main.booking'))
         
         try:
-            quantity = int(quantity)  # Convert quantity to an integer
-            price = 100 * quantity  # Calculate the price of tickets
+            quantity = int(quantity) 
+            price = 100 * quantity 
             
-            # Create a new booking and add it to the database
+            
             new_booking = Booking(quantity=quantity, price=price, user_id=current_user.id, event_id=event_id)
             db.session.add(new_booking)
             db.session.commit()
@@ -66,16 +65,12 @@ def booking():
     
     return render_template('booking.html', events=events)
 
-# Route for displaying event details
 @main_bp.route('/event/<int:event_id>')
 def event_details(event_id):
-    # Query the event from the database using the provided event_id
     event = Event.query.get(event_id)
     if event is None:
         return "Event not found", 404
 
-    # If you have a form object, import and initialize it
-    form = TicketBookingForm()  # Replace 'YourFormClass' with your actual form class name
+    form = TicketBookingForm()  
 
-    # Render the event details template with the event and form data
     return render_template('EDetails.html', event=event, form=form)

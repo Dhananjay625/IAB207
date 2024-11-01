@@ -36,6 +36,12 @@ def login():
             flash(error)
     return render_template('login.html', form=login_form, heading='Login')
     
+@auth_bp.route('/logout')
+@login_required  
+def logout():
+    logout_user()  
+    return redirect(url_for('main.homepage'))
+
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     register_form = RegisterForm()
