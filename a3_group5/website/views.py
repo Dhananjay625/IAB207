@@ -14,14 +14,26 @@ def homepage():
     return render_template('homepage.html', events=events)
 
 
+@main_bp.route('/cancel_event/<int:event_id>', methods=['POST'])
+@login_required
+def cancel_event(event_id):
+    event = Event.query.get_or_404(event_id)
+
+    if event.user_id != current_user.id:
+        return redirect(url_for('main.event_details', event_id=event.id, message="You do not have permission to cancel this event."))
+
+    db.session.delete(event)
+    db.session.commit()
+    return redirect(url_for('main.event_details', event_id=event.id, message="Event canceled successfully!"))
+
+
 @main_bp.route('/edit_event/<int:event_id>', methods=['GET', 'POST'])
 @login_required
 def edit_event(event_id):
     event = Event.query.get_or_404(event_id)
 
     if event.user_id != current_user.id:
-        flash("You do not have permission to edit this event.", "danger")
-        return redirect(url_for('main.homepage'))
+        return redirect(url_for('main.event_details', event_id=event.id, message="You do not have permission to edit this event."))
 
     form = EventCreationForm(obj=event)
 
@@ -35,30 +47,15 @@ def edit_event(event_id):
         event.price = form.price.data
 
         db.session.commit()
-        flash('Event updated successfully!', 'success')
-        return redirect(url_for('main.homepage'))
+        return redirect(url_for('main.event_details', event_id=event.id, message="Event updated successfully!"))
 
     return render_template('ECreation.html', form=form, event=event)
-
-@main_bp.route('/cancel_event/<int:event_id>', methods=['POST'])
-@login_required
-def cancel_event(event_id):
-    event = Event.query.get_or_404(event_id)
-
-    if event.user_id != current_user.id:
-        flash("You do not have permission to cancel this event.", "danger")
-        return redirect(url_for('main.homepage'))
-
-    db.session.delete(event)
-    db.session.commit()
-    flash('Event canceled successfully!', 'success')
-    return redirect(url_for('main.homepage'))
 
 
 @main_bp.route('/create_event', methods=['GET', 'POST'])
 def create_event():
     form = EventCreationForm()
-    
+
     if request.method == 'POST' and form.validate_on_submit():
         name = form.name.data
         description = form.description.data
@@ -126,20 +123,15 @@ def booking():
 
 @main_bp.route('/event/<int:event_id>')
 def event_details(event_id):
-    event = Event.query.get(event_id)
-    comments = Comment.query.filter_by(event_id=event_id).all()  
-    if event is None:
-        return "Event not found", 404
-
-    form = TicketBookingForm()  
-
-    return render_template('EDetails.html', event=event, comments=comments, form=form)
+    event = Event.query.get_or_404(event_id)
+    comments = Comment.query.filter_by(event_id=event_id).all()
+    message = request.args.get('message')  
+    return render_template('EDetails.html', event=event, comments=comments, message=message)
 
 
 @main_bp.route('/booking_history')
 @login_required
 def booking_history():
-    # Retrieve the current user's bookings
     bookings = Booking.query.filter_by(user_id=current_user.id).all()
     return render_template('BHistory.html', bookings=bookings)
 

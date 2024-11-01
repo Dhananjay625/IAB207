@@ -25,7 +25,8 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.homepage') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking
+                            History</a>
                     </li>
                     <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.booking') }}">Book Event</a>
                     </li>
@@ -50,31 +51,37 @@
         <p><strong>Status:</strong> {{ event.status }}</p>
 
         {% if current_user.is_authenticated %}
-            <!-- Edit and Cancel Buttons -->
-            <div class="mb-3">
-                <a href="{{ url_for('main.create_event', event_id=event.id) }}" class="btn btn-warning">Edit Event</a>
-                <form action="{{ url_for('main.create_event', event_id=event.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this event?');">Cancel Event</button>
-                </form>
-            </div>
+        <div class="mb-3">
+            <a href="{{ url_for('main.edit_event', event_id=event.id) }}" class="btn btn-warning">Edit Event</a>
+            <form action="{{ url_for('main.cancel_event', event_id=event.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Are you sure you want to cancel this event?');">Cancel Event</button>
+            </form>
+        </div>
+        {% if message %}
+        <div class="alert alert-info mt-3">{{ message }}</div>
         {% endif %}
+        {% endif %}
+
+
 
         <h3>Comments</h3>
         <div class="comments-section">
             {% if comments %}
-                <ul class="list-group">
-                    {% for comment in comments %}
-                        <li class="list-group-item">
-                            <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
-                            <small class="text-muted d-block">Posted on {{ comment.date_posted.strftime('%Y-%m-%d %H:%M') }}</small>
-                        </li>
-                    {% endfor %}
-                </ul>
+            <ul class="list-group">
+                {% for comment in comments %}
+                <li class="list-group-item">
+                    <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+                    <small class="text-muted d-block">Posted on {{ comment.date_posted.strftime('%Y-%m-%d %H:%M')
+                        }}</small>
+                </li>
+                {% endfor %}
+            </ul>
             {% else %}
-                <p>No comments yet. Be the first to comment!</p>
+            <p>No comments yet. Be the first to comment!</p>
             {% endif %}
         </div>
-        
+
         {% if current_user.is_authenticated %}
         <h3>Add a Comment</h3>
         <form action="{{ url_for('event.add_comment', event_id=event.id) }}" method="POST">
