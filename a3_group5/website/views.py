@@ -136,6 +136,14 @@ def event_details(event_id):
     return render_template('EDetails.html', event=event, comments=comments, form=form)
 
 
+@main_bp.route('/booking_history')
+@login_required
+def booking_history():
+    # Retrieve the current user's bookings
+    bookings = Booking.query.filter_by(user_id=current_user.id).all()
+    return render_template('BHistory.html', bookings=bookings)
+
+
 @main_bp.route('/trigger-500')
 def trigger_500():
     return 1 / 0
