@@ -3,16 +3,13 @@ from flask_login import login_required, current_user
 from .models import Event, Booking, db
 from .forms import TicketBookingForm
 
-# Create a Blueprint instance for your main routes
 main_bp = Blueprint('main', __name__)
 
-# Route for the homepage displaying all events
 @main_bp.route('/')
 def homepage():
-    events = Event.query.all()  # Fetch all events from the database
+    events = Event.query.all()  
     return render_template('homepage.html', events=events)
 
-# Route for creating a new event
 @main_bp.route('/create_event', methods=['GET', 'POST'])
 def create_event():
     if request.method == 'POST':
@@ -24,7 +21,6 @@ def create_event():
             flash('All fields are required!', 'danger')
             return redirect(url_for('main.create_event'))
         
-        # Create a new event and add it to the database
         new_event = Event(title=title, description=description, date=date, status='Open')
         db.session.add(new_event)
         db.session.commit()
