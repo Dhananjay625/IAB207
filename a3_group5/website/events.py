@@ -10,9 +10,9 @@ eventbp = Blueprint('event', __name__, url_prefix='/event')
 @eventbp.route('/<int:id>')
 def show(id):
     event = Event.query.get_or_404(id)
-    comments = Comment.query.filter_by(event_id=id).all()
-    print(comments)
-    return render_template('EDetails.html', event=event, comments=comments)
+    return render_template('EDetails.html', event=event)
+
+
 
 @eventbp.route('/<int:event_id>/comment', methods=['POST'])
 @login_required
@@ -20,15 +20,16 @@ def add_comment(event_id):
     content = request.form.get('content')
 
     while True:
-            comment_id = random.randint(100, 999)
-            existing_user = db.session.scalar(db.select(Comment).where(Comment.id == comment_id))
-            if existing_user is None:
-                break
+        comment_id = random.randint(100, 999)
+        existing_comment = db.session.scalar(db.select(Comment).where(Comment.id == comment_id))
+        if existing_comment is None:
+            break
 
     if content:
-        comment = Comment(id=comment_id ,content=content, user_id=current_user.id, event_id=event_id)
+        comment = Comment(id=comment_id, content=content, user_id=current_user.id, event_id=event_id)
         db.session.add(comment)
         db.session.commit()
     else:
         flash('Comment cannot be empty.')
     return redirect(url_for('event.show', id=event_id))
+

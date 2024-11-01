@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand"href="{{ url_for('main.homepage') }}">
+            <a class="navbar-brand" href="{{ url_for('main.homepage') }}">
                 <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
                 EventHub
             </a>
@@ -21,19 +21,26 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.homepage') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.create_event') }}">Create Event</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking') }}">Booking History</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.homepage') }}">Home</a>
+                    </li>
+                 {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.booking') }}">Booking History</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.booking') }}">Book Event</a></li>
-                {% if current_user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                 {% else %}
+                {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a></li>
                 {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
+
 
     <main class="container my-5">
         <h2>Create or Update an Event</h2>

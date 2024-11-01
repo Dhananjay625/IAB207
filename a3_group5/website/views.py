@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask import Blueprint, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Event, Booking, db
+from .models import Event, Booking, db, Comment
 from .forms import TicketBookingForm
 
 main_bp = Blueprint('main', __name__)
@@ -64,12 +64,13 @@ def booking():
 @main_bp.route('/event/<int:event_id>')
 def event_details(event_id):
     event = Event.query.get(event_id)
+    comments = Comment.query.filter_by(event_id=event_id).all()  
     if event is None:
         return "Event not found", 404
 
     form = TicketBookingForm()  
 
-    return render_template('EDetails.html', event=event, form=form)
+    return render_template('EDetails.html', event=event, comments=comments, form=form)
 
 
 @main_bp.route('/trigger-500')
