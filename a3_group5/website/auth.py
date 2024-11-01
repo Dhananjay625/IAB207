@@ -21,7 +21,7 @@ def login():
         print(password)
         
         if user is None:
-            flash("Account doesn't exist.Create a new one.")
+            error = 'Account does not exist.'
 
         elif not check_password_hash(user.password, password):  
             error = 'Incorrect password.'

@@ -13,6 +13,8 @@ class User(UserMixin, db.Model):
 
     bookings = db.relationship('Booking', back_populates='user', lazy=True)
     comments = db.relationship('Comment', back_populates='user', lazy=True)
+    def is_active(self):
+        return True
 
 class Event(db.Model):
     __tablename__ = 'event'
