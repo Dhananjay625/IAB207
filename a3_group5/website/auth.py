@@ -44,9 +44,10 @@ def register():
         username = register_form.user_name.data
         email = register_form.email.data
         password = register_form.password.data
-        confirm_password = register_form.confirm_password.data
+        contact_number = register_form.contact_number.data
+        address = register_form.address.data
 
-        if password != confirm_password:
+        if password != register_form.confirm_password.data:
             flash('Passwords do not match.')
             return render_template('register.html', form=register_form)
 
@@ -61,23 +62,21 @@ def register():
             if existing_user is None:
                 break
 
-        new_user = User(id=user_id, username=username, email=email, password=generate_password_hash(password))
+        new_user = User(
+            id=user_id, username=username, email=email,
+            password=generate_password_hash(password),
+            contact_number=contact_number, address=address
+        )
         
         db.session.add(new_user)
 
         try:
             db.session.commit()
             flash('Registration successful! Please log in.')
-            return redirect(url_for('auth.login'))  
+            return redirect(url_for('auth.login'))
         except Exception as e:
-            db.session.rollback()  
+            db.session.rollback()
             flash(f"An error occurred: {e}")
             return render_template('register.html', form=register_form)
 
     return render_template('register.html', form=register_form)
-
-@auth_bp.route('/logout')
-def logout():
-    logout_user()  # Make sure this logs out the user correctly
-    flash('You have been logged out successfully!', 'success')
-    return redirect(url_for('main.homepage'))

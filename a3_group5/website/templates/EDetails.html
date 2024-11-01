@@ -37,7 +37,6 @@
 
     <main class="container my-5">
         <h2>Event Details - {{ event.title }}</h2>
-        <!-- Check if the event image exists, use a fallback image if not -->
         <img src="{{ url_for('static', filename='img/' + (event.image if event.image else 'default.jpg')) }}" 
              class="img-fluid mb-4" alt="{{ event.title }}">
         <p>{{ event.description }}</p>
@@ -45,14 +44,8 @@
         <p><strong>Time:</strong> 7:00 PM - 11:00 PM</p>
         <p><strong>Venue:</strong> {{ event.venue }}</p>
         <p><strong>Status:</strong> {{ event.status }}</p>
-
-        <h3>Book Tickets</h3>
         <form action="{{ url_for('main.booking', event_id=event.id) }}" method="POST" class="mb-4">
             {{ form.hidden_tag() }}
-            <div class="mb-3">
-                <label for="ticketQuantity" class="form-label">Number of Tickets</label>
-                {{ form.ticket_quantity(class="form-control", min=1, max=10) }}
-            </div>
             <button type="submit" class="btn btn-primary">Book Now</button>
         </form>
     </main>

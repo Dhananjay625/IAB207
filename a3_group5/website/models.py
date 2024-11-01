@@ -6,6 +6,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
+    contact_number = db.Column(db.Integer, nullable=False)
+    address = db.Column(db.String(150), nullable=False)
 
     bookings = db.relationship('Booking', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
