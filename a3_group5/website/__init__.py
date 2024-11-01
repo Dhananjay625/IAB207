@@ -30,4 +30,8 @@ def create_app():
     from .auth import auth_bp
     app.register_blueprint(auth_bp)
 
+    from .events import eventbp
+    app.register_blueprint(eventbp)
+
+
     return app

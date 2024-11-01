@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
-from wtforms.validators import InputRequired, Length, Email, EqualTo
+from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, IntegerField
+from wtforms.validators import InputRequired, Length, Email, EqualTo, NumberRange
 
 class LoginForm(FlaskForm):
     user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
@@ -14,3 +14,7 @@ class  RegisterForm(FlaskForm):
                                                      EqualTo('confirm_password', message="Passwords should match")])
     confirm_password = PasswordField("Confirm Password", validators=[InputRequired()])
     submit = SubmitField("Register")
+
+class TicketBookingForm(FlaskForm):
+    ticket_quantity = IntegerField("Number of Tickets", validators=[InputRequired(), NumberRange(min=1, max=10)])
+    submit = SubmitField("Book Now")
