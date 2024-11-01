@@ -13,7 +13,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.homepage') }}">
-                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" width="30" height="30"
+                    class="d-inline-block align-text-top">
                 EventHub
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -22,13 +23,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.homepage') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking') }}">Booking History</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.booking') }}">Book Event</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking') }}">Booking History</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('main.booking') }}">Book Event</a>
+                    </li>
                     {% if current_user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -37,46 +41,41 @@
 
     <main class="container my-5">
         <h2>Event Details - {{ event.title }}</h2>
-        <img src="{{ url_for('static', filename='img/' + ('bruh3.jpg')) }}" 
-             class="img-fluid mb-4" alt="{{ event.title }}">
+        <img src="{{ url_for('static', filename='img/' + (event.image if event.image else 'default.jpg')) }}"
+            class="img-fluid mb-4" alt="{{ event.title }}">
         <p>{{ event.description }}</p>
         <p><strong>Date:</strong> {{ event.date }}</p>
         <p><strong>Time:</strong> 7:00 PM - 11:00 PM</p>
         <p><strong>Venue:</strong> {{ event.venue }}</p>
         <p><strong>Status:</strong> {{ event.status }}</p>
-        <form action="{{ url_for('main.booking', event_id=event.id) }}" method="POST" class="mb-4">
-            {{ form.hidden_tag() }}
-            <button type="submit" class="btn btn-primary">Book Now</button>
-        </form>
 
-        <section class="comments">
-            <h3>Comments</h3>
-            <div class="comments-section">
-                {% if comments %}
-                    <ul class="list-group">
-                        {% for comment in comments %}
-                            <li class="list-group-item">
-                                <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
-                                <small class="text-muted d-block">Posted on {{ comment.date_posted.strftime('%Y-%m-%d %H:%M') }}</small>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No comments yet. Be the first to comment!</p>
-                {% endif %}
+        <h3>Comments</h3>
+        <div class="comments-section">
+            {% if comments %}
+                <ul class="list-group">
+                    {% for comment in comments %}
+                        <li class="list-group-item">
+                            <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+                            <small class="text-muted d-block">Posted on {{ comment.date_posted.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No comments yet. Be the first to comment!</p>
+            {% endif %}
+        </div>
+        {% if current_user.is_authenticated %}
+        <h3>Add a Comment</h3>
+        <form action="{{ url_for('event.add_comment', event_id=event.id) }}" method="POST">
+            <div class="mb-3">
+                <textarea class="form-control" name="content" rows="3" placeholder="Write your comment here..."
+                    required></textarea>
             </div>
-            
-        
-            <form action="{{ url_for('event.add_comment', event_id=event.id) }}" method="POST">
-                {{ form.hidden_tag() }}
-                <div class="mb-3">
-                    <label for="content" class="form-label">Add a comment</label>
-                    <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-secondary">Submit Comment</button>
-            </form>
-        </section>        
-
+            <button type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+        {% else %}
+        <p><a href="{{ url_for('auth.login') }}">Log in</a> to post a comment.</p>
+        {% endif %}
     </main>
 
     <footer class="text-center py-3">
