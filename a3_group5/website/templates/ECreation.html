@@ -44,37 +44,52 @@
 
     <main class="container my-5">
         <h2>Create or Update an Event</h2>
-        <form>
+        <form method="POST" action="{{ url_for('main.create_event') }}">
+            {{ form.hidden_tag() }}
+        
             <div class="mb-3">
                 <label for="eventName" class="form-label">Event Name</label>
-                <input type="text" class="form-control" id="eventName" placeholder="Enter event name">
+                <input type="text" class="form-control" id="eventName" name="name" placeholder="Enter event name" required>
             </div>
+        
             <div class="mb-3">
                 <label for="eventDescription" class="form-label">Event Description</label>
-                <textarea class="form-control" id="eventDescription" rows="4" placeholder="Enter event description"></textarea>
+                <textarea class="form-control" id="eventDescription" name="description" rows="4" placeholder="Enter event description" required></textarea>
             </div>
+        
             <div class="mb-3">
                 <label for="eventDate" class="form-label">Event Date</label>
-                <input type="date" class="form-control" id="eventDate">
+                <input type="date" class="form-control" id="eventDate" name="date" required>
             </div>
+        
             <div class="mb-3">
-                <label for="eventTime" class="form-label">Start Time</label>
-                <input type="time" class="form-control" id="eventTime">
+                <label for="eventStartTime" class="form-label">Start Time</label>
+                <input type="time" class="form-control" id="eventStartTime" name="start_time" required>
             </div>
+        
             <div class="mb-3">
                 <label for="eventEndTime" class="form-label">End Time</label>
-                <input type="time" class="form-control" id="eventEndTime">
+                <input type="time" class="form-control" id="eventEndTime" name="end_time">
             </div>
+        
             <div class="mb-3">
                 <label for="eventVenue" class="form-label">Venue</label>
-                <input type="text" class="form-control" id="eventVenue" placeholder="Enter event venue">
+                <input type="text" class="form-control" id="eventVenue" name="venue" placeholder="Enter event venue" required>
             </div>
+        
+            <div class="mb-3">
+                <label for="eventPrice" class="form-label">Ticket Price</label>
+                <input type="text" class="form-control" id="eventPrice" name="price" placeholder="Enter Ticket Price">
+            </div>
+        
             <div class="mb-3">
                 <label for="eventImage" class="form-label">Event Image</label>
-                <input type="file" class="form-control" id="eventImage">
+                <input type="file" class="form-control" id="eventImage" name="image">
             </div>
+        
             <button type="submit" class="btn btn-success">Create Event</button>
         </form>
+        
     </main>
 
     <footer class="text-center py-3">
