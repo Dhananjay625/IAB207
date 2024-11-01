@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template
+from flask import Blueprint, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from .models import Event, Booking, db
 from .forms import TicketBookingForm
@@ -33,7 +34,7 @@ def create_event():
 @main_bp.route('/booking', methods=['GET', 'POST'])
 @login_required 
 def booking():
-    events = Event.query.filter_by(status='Open').all() 
+    events = Event.query.filter_by(status='Open').all()  
     
     if request.method == 'POST':
         event_id = request.form.get('selectEvent')
@@ -46,7 +47,6 @@ def booking():
         try:
             quantity = int(quantity) 
             price = 100 * quantity 
-            
             
             new_booking = Booking(quantity=quantity, price=price, user_id=current_user.id, event_id=event_id)
             db.session.add(new_booking)
@@ -70,3 +70,8 @@ def event_details(event_id):
     form = TicketBookingForm()  
 
     return render_template('EDetails.html', event=event, form=form)
+
+
+@main_bp.route('/trigger-500')
+def trigger_500():
+    return 1 / 0
