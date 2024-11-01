@@ -2,7 +2,9 @@ from flask import Flask, render_template
 from flask import Blueprint, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from .models import Event, Booking, db, Comment
-from .forms import TicketBookingForm
+from .forms import TicketBookingForm, EventCreationForm
+import random
+from datetime import datetime
 
 main_bp = Blueprint('main', __name__)
 
@@ -13,23 +15,41 @@ def homepage():
 
 @main_bp.route('/create_event', methods=['GET', 'POST'])
 def create_event():
-    if request.method == 'POST':
-        title = request.form.get('eventName')
-        description = request.form.get('eventDescription')
-        date = request.form.get('eventDate')
-        
-        if not title or not description or not date:
-            flash('All fields are required!', 'danger')
-            return redirect(url_for('main.create_event'))
-        
-        new_event = Event(title=title, description=description, date=date, status='Open')
-        db.session.add(new_event)
-        db.session.commit()
-        
-        flash('Event created successfully!', 'success')
-        return redirect(url_for('main.homepage'))
+    form = EventCreationForm()
     
-    return render_template('ECreation.html')
+    if request.method == 'POST' and form.validate_on_submit():
+        name = form.name.data
+        description = form.description.data
+        date = form.date.data
+        start_time = form.start_time.data
+        end_time = form.end_time.data
+        venue = form.venue.data
+        price = form.price.data
+
+        print("Form data:", name, description, date, start_time, end_time, venue, price)  
+        
+        new_event = Event(
+            name=name,
+            description=description,
+            date=date,
+            start_time=start_time,
+            end_time=end_time,
+            venue=venue,
+            status='Open'
+        )
+        
+        print("New event created:", new_event)
+
+        try:
+            db.session.add(new_event)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback() 
+
+        return redirect(url_for('main.homepage'))
+
+    return render_template('ECreation.html', form=form)
+
 
 @main_bp.route('/booking', methods=['GET', 'POST'])
 @login_required 

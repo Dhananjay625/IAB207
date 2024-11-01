@@ -17,9 +17,12 @@ class User(UserMixin, db.Model):
 class Event(db.Model):
     __tablename__ = 'event'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    venue = db.Column(db.String(300), nullable=False)
     status = db.Column(db.String(20), nullable=False)
 
     bookings = db.relationship('Booking', back_populates='event', lazy=True)
