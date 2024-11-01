@@ -42,58 +42,73 @@
 
     <main class="container my-5">
         <h2>Event Details - {{ event.title }}</h2>
-        <img src="{{ url_for('static', filename='img/' + (event.image if event.image else 'default.jpg')) }}"
-            class="img-fluid mb-4" alt="{{ event.title }}">
-        <p>{{ event.description }}</p>
-        <p><strong>Date:</strong> {{ event.date }}</p>
-        <p><strong>Time:</strong> 7:00 PM - 11:00 PM</p>
-        <p><strong>Venue:</strong> {{ event.venue }}</p>
-        <p><strong>Status:</strong> {{ event.status }}</p>
 
-        {% if current_user.is_authenticated %}
-        <div class="mb-3">
-            <a href="{{ url_for('main.edit_event', event_id=event.id) }}" class="btn btn-warning">Edit Event</a>
-            <form action="{{ url_for('main.cancel_event', event_id=event.id) }}" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('Are you sure you want to cancel this event?');">Cancel Event</button>
-            </form>
-        </div>
         {% if message %}
-        <div class="alert alert-info mt-3">{{ message }}</div>
+            <div class="alert alert-info mt-3">{{ message }}</div>
         {% endif %}
-        {% endif %}
 
+        {% if edit_mode %}
+            <form action="{{ url_for('main.edit_event', event_id=event.id) }}" method="POST">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    <label for="eventName" class="form-label">Event Name</label>
+                    <input type="text" class="form-control" id="eventName" name="name" value="{{ event.name }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="eventDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="eventDescription" name="description" required>{{ event.description }}</textarea>
+                </div>
 
+                <div class="mb-3">
+                    <label for="eventDate" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="eventDate" name="date" value="{{ event.date }}" required>
+                </div>
 
-        <h3>Comments</h3>
-        <div class="comments-section">
-            {% if comments %}
-            <ul class="list-group">
-                {% for comment in comments %}
-                <li class="list-group-item">
-                    <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
-                    <small class="text-muted d-block">Posted on {{ comment.date_posted.strftime('%Y-%m-%d %H:%M')
-                        }}</small>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No comments yet. Be the first to comment!</p>
-            {% endif %}
-        </div>
+                <div class="mb-3">
+                    <label for="eventStartTime" class="form-label">Start Time</label>
+                    <input type="time" class="form-control" id="eventStartTime" name="start_time" value="{{ event.start_time }}" required>
+                </div>
 
-        {% if current_user.is_authenticated %}
-        <h3>Add a Comment</h3>
-        <form action="{{ url_for('event.add_comment', event_id=event.id) }}" method="POST">
-            <div class="mb-3">
-                <textarea class="form-control" name="content" rows="3" placeholder="Write your comment here..."
-                    required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Comment</button>
-        </form>
+                <div class="mb-3">
+                    <label for="eventEndTime" class="form-label">End Time</label>
+                    <input type="time" class="form-control" id="eventEndTime" name="end_time" value="{{ event.end_time }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="eventVenue" class="form-label">Venue</label>
+                    <input type="text" class="form-control" id="eventVenue" name="venue" value="{{ event.venue }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="eventPrice" class="form-label">Ticket Price</label>
+                    <input type="number" class="form-control" id="eventPrice" name="price" value="{{ event.price }}" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="{{ url_for('main.event_details', event_id=event.id) }}" class="btn btn-secondary">Cancel</a>
+            </form>
         {% else %}
-        <p><a href="{{ url_for('auth.login') }}">Log in</a> to post a comment.</p>
+            <p><strong>Description:</strong> {{ event.description }}</p>
+            <p><strong>Date:</strong> {{ event.date }}</p>
+            <p><strong>Start Time:</strong> {{ event.start_time }}</p>
+            <p><strong>End Time:</strong> {{ event.end_time }}</p>
+            <p><strong>Venue:</strong> {{ event.venue }}</p>
+            <p><strong>Price:</strong> {{ event.price }}</p>
+
+            {% if current_user.is_authenticated %}
+                <div class="mb-3">
+                    <a href="{{ url_for('main.event_details', event_id=event.id, edit='true') }}" class="btn btn-warning">Edit Event</a>
+                    <form action="{{ url_for('main.cancel_event', event_id=event.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this event?');">Cancel Event</button>
+                    </form>
+                </div>
+            {% endif %}
         {% endif %}
+        <form action="{{ url_for('main.booking') }}" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-warning">Book Event</button>
+        </form>        
     </main>
 
     <footer class="text-center py-3">

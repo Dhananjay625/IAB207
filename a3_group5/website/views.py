@@ -126,6 +126,7 @@ def event_details(event_id):
     event = Event.query.get_or_404(event_id)
     comments = Comment.query.filter_by(event_id=event_id).all()
     message = request.args.get('message')  
+    edit_mode = request.args.get('edit') == 'true' 
     return render_template('EDetails.html', event=event, comments=comments, message=message)
 
 
